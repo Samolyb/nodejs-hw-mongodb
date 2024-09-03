@@ -5,9 +5,6 @@ import { env } from "./utils/env.js";
 
 import * as contactServices from "./services/contacts.js";
 
-
-setupServer();
-
 export const startServer = () => {
     const app = express();
 
