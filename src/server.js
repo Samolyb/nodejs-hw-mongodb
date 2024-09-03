@@ -5,7 +5,6 @@ import { env } from "./utils/env.js";
 
 import * as contactServices from "./services/contacts.js";
 
-const setupServer = require('./server');
 
 setupServer();
 
