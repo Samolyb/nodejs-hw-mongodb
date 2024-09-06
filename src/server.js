@@ -1,57 +1,25 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import mongoose from 'mongoose';
+import contactsRouter from './routers/contacts.js';
+import errorHandler from './middlewares/errorHandler.js';
+import notFoundHandler from './middlewares/notFoundHandler.js';
 
-import { env } from "./utils/env.js";
+const app = express();
+app.use(express.json());
 
-import * as contactServices from "./services/contacts.js";
+app.use('/contacts', contactsRouter);
 
-export const startServer = () => {
-    const app = express();
+app.use(notFoundHandler);
+app.use(errorHandler);
 
-    app.use(cors());
-    app.use(express.json());
-
-    app.get("/contacts", async (req, res) => {
-        const data = await contactServices.getAllContacts();
-
-        res.json({
-            status: 200,
-            message: "Successfully found contacts!",
-            data,
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log('Database connection successful');
+        app.listen(3000, () => {
+            console.log('Server is running on port 3000');
         });
+    })
+    .catch(err => {
+        console.error('Database connection failed:', err.message);
+        process.exit(1);
     });
-
-    app.get("/contacts/:ContactId", async (req, res) => {
-        const { ContactId } = req.params;
-        const data = await contactServices.getContactById(ContactId);
-
-        if (!data) {
-            return res.status(404).json({
-                message: `Contact with id=${ContactId} not found`
-            });
-        }
-
-        res.json({
-            status: 200,
-            message: `Contact with ${ContactId} successfully find`,
-            data,
-        });
-    });
-
-    app.use((req, res) => {
-        res.status(404).json({
-            message: `${req.url} not found`
-        });
-    });
-
-    app.use((error, req, res, next) => {
-        res.status(500).json({
-            message: error.message,
-        });
-    });
-
-
-    const port = Number(env("PORT", 3000));
-
-    app.listen(port, () => console.log("Server running on port 3000"));
-};
