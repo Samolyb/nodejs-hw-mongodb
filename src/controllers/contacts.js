@@ -6,7 +6,7 @@ import parseSortParams from '../utils/parseSortParams.js';
 import * as contactServices from '../services/contacts.js';
 
 import { parseContactsFilterParams } from '../utils/filters/parseContactsFilterParams.js';
-import { sortFields } from '../db/Contacts.js';
+import { sortFields } from '../db/models/сontacts.js';
 
 
 export const getAllContactsController = async (req, res) => {
