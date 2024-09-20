@@ -1,6 +1,6 @@
 import ContactCollection from "../db/models/сontacts.js";
 
-// import calculatePaginationData from '../utils/calculatePaginationData.js';
+import calculatePaginationData from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
 
 export const getAllContacts = async ({ perPage = 10, page = 1, sortBy = 'name', sortOrder = 'asc', filter = {} }) => {
@@ -23,6 +23,8 @@ export const getAllContacts = async ({ perPage = 10, page = 1, sortBy = 'name', 
     const hasPreviousPage = page > 1;
     const hasNextPage = page < totalPages;
 
+    const paginationData = calculatePaginationData({ count, perPage, page });
+
     return {
         contacts,
         page,
@@ -31,6 +33,7 @@ export const getAllContacts = async ({ perPage = 10, page = 1, sortBy = 'name', 
         totalPages,
         hasPreviousPage,
         hasNextPage,
+        ...paginationData,
     };
 };
 export const getContactById = async (id) => {
