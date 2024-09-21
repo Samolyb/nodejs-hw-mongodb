@@ -8,25 +8,29 @@ import * as contactServices from '../services/contacts.js';
 import { parseContactsFilterParams } from '../utils/filters/parseContactsFilterParams.js';
 import { sortFields } from '../db/models/сontacts.js';
 
+export const getAllContactsController = async (req, res, next) => {
+    try {
+        const { perPage, page } = parsePaginationParams(req.query);
+        const { sortBy, sortOrder } = parseSortParams({ ...req.query, sortFields });
+        const filter = parseContactsFilterParams(req.query);
 
-export const getAllContactsController = async (req, res) => {
-    const { perPage, page } = parsePaginationParams(req.query);
-    const { sortBy, sortOrder } = parseSortParams({ ...req.query, sortFields });
-    const filter = parseContactsFilterParams(req.query);
+        const data = await contactServices.getAllContacts({
+            perPage,
+            page,
+            sortBy,
+            sortOrder,
+            filter,
+        });
 
-    const data = await contactServices.getAllContacts({
-        perPage,
-        page,
-        sortBy,
-        sortOrder,
-        filter,
-    });
-
-    res.json({
-        status: 200,
-        message: 'Successfully found contacts',
-        data,
-    });
+        res.status(200).json({
+            status: 200,
+            message: 'Successfully found contacts',
+            data,
+        });
+    } catch (error) {
+        console.log(error);
+        next(createHttpError(500, 'Error while retrieving contacts'));
+    }
 };
 
 export const getContactByIdController = async (req, res, next) => {
