@@ -13,6 +13,7 @@ export const getAllContactsController = async (req, res) => {
     const { perPage, page } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams({ ...req.query, sortFields });
     const filter = parseContactsFilterParams(req.query);
+
     const data = await contactServices.getAllContacts({
         perPage,
         page,

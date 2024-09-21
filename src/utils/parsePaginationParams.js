@@ -9,8 +9,8 @@ const parseInteger = (value, defaultValue) => {
 };
 
 const parsePaginationParams = ({ perPage, page }) => {
-    const parsedPerPage = parseInteger(perPage, 4);
-    const parsedPage = parseInteger(page, 2);
+    const parsedPerPage = parseInteger(perPage, 10);
+    const parsedPage = parseInteger(page, 1);
 
     return {
         perPage: parsedPerPage,
