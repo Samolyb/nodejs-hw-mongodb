@@ -8,32 +8,26 @@ import * as contactServices from '../services/contacts.js';
 import { parseContactsFilterParams } from '../utils/filters/parseContactsFilterParams.js';
 import { sortFields } from '../db/models/сontacts.js';
 
-export const getAllContactsController = async (req, res, next) => {
-    try {
-        const { perPage, page } = parsePaginationParams(req.query);
-        const { sortBy, sortOrder } = parseSortParams({ ...req.query, sortFields });
+export const getAllContactsController = async (req, res) => {
+    const { perPage, page } = parsePaginationParams(req.query);
+    const { sortBy, sortOrder } = parseSortParams({ ...req.query, sortFields });
+    const filter = parseContactsFilterParams(req.query);
+    const data = await contactServices.getAllContacts({
+        perPage,
+        page,
+        sortBy,
+        sortOrder,
+        filter,
+    });
 
-        const filter = parseContactsFilterParams(req.query);
-
-        const data = await contactServices.getAllContacts({
-            perPage,
-            page,
-            sortBy,
-            sortOrder,
-            filter,
-        });
-
-        res.json({
-            status: 200,
-            message: 'Successfully found contacts',
-            data,
-        });
-    } catch (error) {
-        next(createHttpError(500, error.message));
-    }
+    res.json({
+        status: 200,
+        message: 'Successfully found contacts',
+        data,
+    });
 };
 
-export const getContactByIdController = async (req, res, next) => {
+export const getContactByIdController = async (req, res) => {
     const { id } = req.params;
     const data = await contactServices.getContactById(id);
 
