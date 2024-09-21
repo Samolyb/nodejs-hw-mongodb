@@ -1,31 +1,36 @@
 import ContactCollection from "../db/models/сontacts.js";
 
-import calculatePaginationData from '../utils/calculatePaginationData.js';
-import { SORT_ORDER } from '../constants/index.js';
+// import calculatePaginationData from '../utils/calculatePaginationData.js';
+import { sortFields } from '../constants/index.js';
 
-export const getAllContacts = async ({
-    perPage,
-    page,
-    sortBy = "_id",
-    sortOrder = SORT_ORDER[0],
-    filter = {}
-}) => {
+export const getAllContacts = async ({ perPage = 10, page = 1, sortBy = 'name', sortOrder = 'asc', filter = {} }) => {
     const skip = (page - 1) * perPage;
+
+    if (!sortFields.includes(sortBy)) {
+        throw new Error(`Invalid sort field: ${sortBy}`);
+    }
+
+    const sortDirection = sortOrder === 'desc' ? -1 : 1;
 
     const contacts = await ContactCollection.find(filter)
         .skip(skip)
         .limit(perPage)
-        .sort({ [sortBy]: sortOrder });
+        .sort({ [sortBy]: sortDirection });
 
     const count = await ContactCollection.countDocuments(filter);
-    const paginationData = calculatePaginationData({ count, perPage, page });
+
+    const totalPages = Math.ceil(count / perPage);
+    const hasPreviousPage = page > 1;
+    const hasNextPage = page < totalPages;
 
     return {
+        contacts,
         page,
         perPage,
-        contacts,
         totalItems: count,
-        ...paginationData,
+        totalPages,
+        hasPreviousPage,
+        hasNextPage,
     };
 };
 export const getContactById = async (id) => {
