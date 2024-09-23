@@ -5,15 +5,15 @@ import { SORT_ORDER } from '../constants/index.js';
 
 export const getAllContacts = async ({ perPage, page, sortBy = 'name', sortOrder = SORT_ORDER[0], filter = {} }) => {
     const skip = (page - 1) * perPage;
-    const contacts = await ContactCollection.find(filter).skip(skip).limit(perPage).sort({ [sortBy]: sortOrder });
+    const data = await ContactCollection.find(filter).skip(skip).limit(perPage).sort({ [sortBy]: sortOrder });
     const count = await ContactCollection.find(filter).countDocuments();
 
     const paginationData = calculatePaginationData({ count, perPage, page });
 
     return {
+        data,
         page,
         perPage,
-        contacts,
         totalItems: count,
         ...paginationData,
     };
