@@ -1,4 +1,4 @@
-import { parseContactType, parseIsFavourite } from "../parseNumber.js";
+import { parseContactType, parseIsFavourite } from "./parseNumber.js";
 
 export const parseTypeFilterParams = ({ type }) => {
     const isType = parseContactType(type);
@@ -24,4 +24,4 @@ export const parseContactsFilterParams = (query = {}) => {
     }
 
     return filter;
-};
+}; 

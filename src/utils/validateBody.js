@@ -17,4 +17,4 @@ const validateBody = schema => {
     return func;
 };
 
-export default validateBody;
+export default validateBody; 
