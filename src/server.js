@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import { env } from "./utils/env.js";
 
 import notFoundHandler from "./middlewares/notFoundHandler.js";
-import errorHandler from "./middlewares/errorHandler.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 // import logger from "../src/middlewares/loger.js";
 
 import authRouter from "./routers/auth.js";
