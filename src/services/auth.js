@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
 import { randomBytes } from "crypto";
 
-import SessionCollection from "../db/models/session.js";
-import UserCollection from "../db/models/user.js";
+import SessionCollection from "../db/models/Session.js";
+import UserCollection from "../db/models/User.js";
 
 import { accessTokenLifetime, refreshTokenLifetime } from "../constants/users.js";
 
@@ -25,7 +25,7 @@ export const register = async (payload) => {
     const { email, password } = payload;
     const user = await UserCollection.findOne({ email });
     if (user) {
-        throw createHttpError(409, "'Email in use");
+        throw createHttpError(409, "Email already exist");
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -56,6 +56,7 @@ export const login = async (payload) => {
         userId: user._id,
         ...sessionData,
     });
+
     return userSession;
 };
 
@@ -83,6 +84,7 @@ export const refreshSession = async ({ refreshToken, sessionId }) => {
         userId: oldSession._id,
         ...sessionData,
     });
+
     return userSession;
 };
 
