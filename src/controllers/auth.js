@@ -12,11 +12,13 @@ const setupSession = (res, session) => {
     });
 };
 
+
 export const registerController = async (req, res) => {
     const newUser = await authServices.register(req.body);
+
     res.status(201).json({
         status: 201,
-        message: "Successfully registered a user!",
+        message: "Succsessfully register user",
         data: newUser,
     });
 };
@@ -24,11 +26,19 @@ export const registerController = async (req, res) => {
 export const loginController = async (req, res) => {
     const session = await authServices.login(req.body);
 
-    setupSession(res, session);
+    res.cookie("refreshToken", session.refreshToken, {
+        httpOnly: true,
+        expire: new Date(Date.now() + session.refreshTokenValidUntil),
+    });
+
+    res.cookie("sessionId", session._id, {
+        httpOnly: true,
+        expire: new Date(Date.now() + session.refreshTokenValidUntil),
+    });
 
     res.json({
         status: 200,
-        message: "Successfully logged in an user!",
+        message: "Successfully login",
         data: {
             accessToken: session.accessToken,
         }
@@ -43,7 +53,7 @@ export const refreshController = async (req, res) => {
 
     res.json({
         status: 200,
-        message: "Successfully refreshed a session!",
+        message: "Successfully refresh session",
         data: {
             accessToken: session.accessToken,
         }
