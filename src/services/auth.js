@@ -8,8 +8,8 @@ import * as fs from "node:fs/promises";
 import handlebars from "handlebars";
 import jwt from 'jsonwebtoken';
 
-import SessionCollection from "../db/Session.js";
-import UserCollection from "../db/User.js";
+import SessionCollection from "../db/models/session.js";
+import UserCollection from "../db/models/user.js";
 
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 import { env } from "../utils/env.js";
