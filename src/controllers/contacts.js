@@ -5,15 +5,20 @@ import parseSortParams from '../utils/parseSortParams.js';
 
 import * as contactServices from '../services/contacts.js';
 
+import saveFileToUploadDir from '../utils/saveFileToUploadDir.js';
+import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
+import { env } from '../utils/env.js';
+
 import { parseContactsFilterParams } from '../utils/filters/parseContactsFilterParams.js';
 import { sortFields } from '../db/models/Contacts.js';
+
+const enableCloudinary = env("ENABLE_CLOUDINARY");
 
 export const getAllContactsController = async (req, res) => {
     const { perPage, page } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams({ ...req.query, sortFields });
     const filter = parseContactsFilterParams(req.query);
     const { _id: userId } = req.user;
-
     const data = await contactServices.getContacts({
         perPage,
         page,
@@ -24,7 +29,7 @@ export const getAllContactsController = async (req, res) => {
 
     res.json({
         status: 200,
-        message: "Successfully found contacts",
+        message: 'Successfully found contacts',
         data,
     });
 };
@@ -32,7 +37,6 @@ export const getAllContactsController = async (req, res) => {
 export const getContactByIdController = async (req, res) => {
     const { id } = req.params;
     const { _id: userId } = req.user;
-
     const data = await contactServices.getContact({ _id: id, userId });
 
     if (!data) {
@@ -46,10 +50,20 @@ export const getContactByIdController = async (req, res) => {
     });
 };
 
-export const addContactController = async (req, res) => {
-    const { _id: userId } = req.user;
 
-    const data = await contactServices.createContact({ ...req.body, userId });
+export const addContactController = async (req, res) => {
+    let poster;
+    if (req.file) {
+        if (enableCloudinary === "true") {
+            poster = await saveFileToCloudinary(req.file, "posters");
+        }
+        else {
+            poster = await saveFileToUploadDir(req.file);
+        }
+    }
+
+    const { _id: userId } = req.user;
+    const data = await contactServices.createContact({ ...req.body, userId, poster });
 
     res.status(201).json({
         status: 201,
@@ -61,14 +75,13 @@ export const addContactController = async (req, res) => {
 export const upsertContactController = async (req, res) => {
     const { id } = req.params;
     const { _id: userId } = req.user;
-
     const { isNew, data } = await contactServices.updateContact({ _id: id, userId }, req.body, { upsert: true });
 
     const status = isNew ? 201 : 200;
 
     res.status(status).json({
         status,
-        message: "Contact upserted successfully",
+        message: "Contact upsert successfully",
         data,
     });
 };
@@ -76,7 +89,6 @@ export const upsertContactController = async (req, res) => {
 export const patchContactController = async (req, res) => {
     const { id } = req.params;
     const { _id: userId } = req.user;
-
     const result = await contactServices.updateContact({ _id: id, userId }, req.body);
 
     if (!result) {
@@ -93,7 +105,6 @@ export const patchContactController = async (req, res) => {
 export const deleteContactController = async (req, res) => {
     const { id } = req.params;
     const { _id: userId } = req.user;
-
     const data = await contactServices.deleteContact({ _id: id, userId });
 
     if (!data) {
