@@ -15,10 +15,6 @@ const contactSchema = new Schema({
         type: String,
         required: true,
     },
-    email: {
-        type: String,
-        required: true,
-    },
     isFavourite: {
         type: Boolean,
         default: false,
@@ -28,7 +24,16 @@ const contactSchema = new Schema({
         type: String,
         enum: contactTypeList,
         required: true,
+        default: 'personal',
     },
+    poster: {
+        type: String,
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
+    }
 }, { versionKey: false, timestamps: true });
 
 contactSchema.post("save", handleSaveError);
