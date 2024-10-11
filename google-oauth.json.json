@@ -1,0 +1,13 @@
+{
+    "web": {
+        "client_id": "753734241711-46890lkftgvhko9uebqhre51ifkivmd0.apps.googleusercontent.com",
+        "project_id": "student-app-438218",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost:3000/confirm-google-auth"
+        ]
+    }
+}
