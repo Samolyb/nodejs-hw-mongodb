@@ -11,10 +11,10 @@ import {
     resetPasswordSchema
 } from "../validation/auth.js";
 import {
-    loginUserController,
-    logoutUserController,
-    refreshUserSessionController,
-    registerUserController,
+    loginController,
+    logoutController,
+    refreshController,
+    registerController,
     requestResetEmailController,
     resetPasswordController,
     getGoogleOAuthUrlController,
@@ -26,20 +26,20 @@ const router = Router();
 router.post(
     '/register',
     validateBody(registerUserSchema),
-    ctrlWrapper(registerUserController),
+    ctrlWrapper(registerController),
 );
 router.post(
     '/login',
     validateBody(loginUserSchema),
-    ctrlWrapper(loginUserController),
+    ctrlWrapper(loginController),
 );
 router.post(
     '/logout',
-    ctrlWrapper(logoutUserController),
+    ctrlWrapper(logoutController),
 );
 router.post(
     '/refresh',
-    ctrlWrapper(refreshUserSessionController)
+    ctrlWrapper(refreshController)
 );
 router.post(
     "/send-reset-email",
