@@ -18,6 +18,8 @@ import { sendEmail } from "../utils/sendEmail.js";
 import { accessTokenLifetime, refreshTokenLifetime } from "../constants/users.js";
 import "dotenv/config";
 
+import { getFullNameFromGoogleTokenPayload, validateCode } from '../utils/googleOAuth2.js';
+
 
 const createSession = () => {
     const accessToken = randomBytes(30).toString("base64");
@@ -190,4 +192,28 @@ export const resetPassword = async (payload) => {
         { password: encryptedPassword },
     );
     await SessionCollection.deleteOne({ userId: user._id });
+};
+
+export const loginOrSignupWithGoogle = async (code) => {
+    const loginTicket = await validateCode(code);
+    const payload = loginTicket.getPayload();
+    if (!payload) throw createHttpError(401);
+
+    let user = await UserCollection.findOne({ email: payload.email });
+    if (!user) {
+        const password = await bcrypt.hash(randomBytes(10), 10);
+        user = await UserCollection.create({
+            email: payload.email,
+            name: getFullNameFromGoogleTokenPayload(payload),
+            password,
+            role: 'parent',
+        });
+    }
+
+    const newSession = createSession();
+
+    return await SessionCollection.create({
+        userId: user._id,
+        ...newSession,
+    });
 };
