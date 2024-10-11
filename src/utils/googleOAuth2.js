@@ -23,7 +23,7 @@ export const generateAuthUrl = () =>
         ],
     });
 
-export const validateBody = async (code) => {
+export const validateCode = async (code) => {
     const response = await googleOAuthClient.getToken(code);
     if (!response.tokens.id_token) throw createHttpError(401,
         'Unauthorized');

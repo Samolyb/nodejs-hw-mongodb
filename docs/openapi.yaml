@@ -1,22 +1,22 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Contacts library 
+  title: Contacts library
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description:
-     This is a Contacts app, for comforteble using 
+  description: >
+    This is a Contacts app, for comfortable using 
 tags:
-   - name: Contacts
+  - name: Contacts
     description: Operations about users.
   - name: Auth
     description: Auth operations.
 servers:
   - url: http://localhost:3000
-  - url: #посилання на задеплоєний сайт
+  - url: https://github.com/Samolyb/nodejs-hw-mongodb/tree/hw7-swagger
 paths:
-    /contacts:
+  /contacts:
     get: 
       $ref: ../swagger/paths/contacts/get.yaml
     post: 
@@ -32,4 +32,4 @@ components:
   securitySchemes:
     bearerAuth:
       type: http
-      scheme: bearer
+      scheme: bearer 
