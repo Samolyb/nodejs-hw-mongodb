@@ -38,6 +38,10 @@ requestBody:
             description: 'Type of contact'
             type: string
             enum: ['home', 'personal']
+          photo:
+            description: "Contact's photo"
+            type: string
+            format: binary  # Це дозволяє передавати файл
 responses:
   '200':
     description: Successfully updated contact
