@@ -7,9 +7,9 @@ export const contactAddSchema = Joi.object({
     phoneNumber: Joi.string().required().min(3).max(20).messages({
         "any.required": "number must be exist",
     }),
-    email: Joi.string().email(),
+    email: Joi.string().email().min(3).max(20).required().messages,
     contactType: Joi.string().required().valid(...contactTypeList).default('personal').min(3).max(20),
-    isFavourite: Joi.boolean(),
+    isFavourite: Joi.boolean().required().messages
 
 });
 
