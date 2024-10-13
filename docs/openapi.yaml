@@ -5,7 +5,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: >
+  description: 
     This is a Contacts app, for comfortable using 
 tags:
   - name: Contacts
@@ -14,7 +14,7 @@ tags:
     description: Auth operations.
 servers:
   - url: http://localhost:3000
-  - url: https://nodejs-hw-mongodb-86.onrender.com 
+  - url: https://nodejs-hw-mongodb-86.onrender.com
 paths:
   /contacts:
     get: 
@@ -32,4 +32,4 @@ components:
   securitySchemes:
     bearerAuth:
       type: http
-      scheme: bearer 
+      scheme: bearer

@@ -29,7 +29,7 @@ properties:
   contactType:
     description: 'Contact type'
     type: string
-    enum: ['home', 'personal']
+    enum: ['work', 'home', 'personal']
   userId:
     description: "Movie's user id"
     type: string

@@ -7,7 +7,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "description": "This is a Contacts app, for comfortable using"
+        "description": "Contacts app, for comfortable using"
     },
     "servers": [
         {
@@ -478,7 +478,7 @@
                                     "properties": {
                                         "status": {
                                             "type": "integer",
-                                            "example": 200
+                                            "example": 204
                                         },
                                         "message": {
                                             "type": "string",
@@ -563,6 +563,7 @@
                         "description": "Contact type",
                         "type": "string",
                         "enum": [
+                            "work",
                             "home",
                             "personal"
                         ]

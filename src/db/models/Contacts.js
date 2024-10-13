@@ -15,10 +15,12 @@ const contactSchema = new Schema({
         type: String,
         required: true,
     },
+    email: {
+        type: String,
+    },
     isFavourite: {
         type: Boolean,
         default: false,
-        required: true,
     },
     contactType: {
         type: String,
@@ -26,13 +28,13 @@ const contactSchema = new Schema({
         required: true,
         default: 'personal',
     },
-    poster: {
-        type: String,
-    },
     userId: {
         type: Schema.Types.ObjectId,
-        ref: "user",
-        required: true,
+        ref: 'users',
+        required: true
+    },
+    photo: {
+        type: String,
     }
 }, { versionKey: false, timestamps: true });
 

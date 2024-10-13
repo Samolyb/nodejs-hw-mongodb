@@ -16,6 +16,7 @@ requestBody:
           - email
           - isFavourite
           - contactType
+          - photo
         properties:
           name:
             description: "Contacts name"
@@ -24,7 +25,7 @@ requestBody:
           phoneNumber:
             description: "Contacts number"
             type: string
-            example: 0992320987
+            example: '0992320987'
           email:
             description: "Contacts email"
             type: string  
@@ -35,11 +36,12 @@ requestBody:
           contactType:
             description: 'Contact type'
             type: string
-            enum: ['home', 'personal']
+            enum: ['work', 'home', 'personal']
           photo:
-            description: "Contact's photo"
+            description: 'Contact photo'
             type: string
-            format: binary 
+            format: binary
+            example: 'file.jpg'
 responses:
   '201':
     description: Creates a contact
